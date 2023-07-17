@@ -6,5 +6,7 @@
 #define LEDBLUE 21
 
 void init_wcmcu_h2(void *params);
+void set_true();
+void set_false();
 
 #endif

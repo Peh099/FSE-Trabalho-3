@@ -83,12 +83,12 @@ void set_false(){
 
 void init_wcmcu_h2(void *params)
 {
-    //State *state = (State *)params;
-
     led_rgb_init();
+    
     while (true)
     {
-        if (led_on){
+        if (led_on)
+        {
             for (int i = 0; i < 255; i++)
             {
                 led_rgb_set_mode(i);
@@ -100,7 +100,8 @@ void init_wcmcu_h2(void *params)
                 vTaskDelay(10 / portTICK_PERIOD_MS);
             }
         }
-        else{
+        else
+        {
             // Mantém o LED desligado (duty cycle em 0).
             ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 0);
             ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_1, 0);
@@ -109,5 +110,8 @@ void init_wcmcu_h2(void *params)
             ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_1);
             ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_2);
         }
+
+        // Introduce a small delay (e.g., 100 ms) to allow other tasks to run.
+        vTaskDelay(100 / portTICK_PERIOD_MS);
     }
 }

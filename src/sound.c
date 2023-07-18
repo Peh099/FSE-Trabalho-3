@@ -5,7 +5,7 @@
 #include "esp_log.h"
 #include "gpio_setup.h"
 
-#define SOUND_SENSOR_PIN GPIO_NUM_16
+#define SOUND_SENSOR_PIN GPIO_NUM_5
 
 void configSoundSensor() {
     pinMode(SOUND_SENSOR_PIN, GPIO_INPUT);
@@ -15,7 +15,7 @@ int readSoundSensor() {
     return digitalRead(SOUND_SENSOR_PIN);
 }
 
-void init_sound():
+void init_sound(){
     while (true) {
             int soundState = readSoundSensor();
             if (soundState == 1) {
@@ -23,3 +23,4 @@ void init_sound():
             }
         vTaskDelay(pdMS_TO_TICKS(100));
     }
+}

@@ -5,7 +5,7 @@
 #include "esp_log.h"
 #include "gpio_setup.h"
 
-#define FLAME_SENSOR_PIN GPIO_NUM_16
+#define FLAME_SENSOR_PIN GPIO_NUM_23
 
 void configFlameSensor() {
     pinMode(FLAME_SENSOR_PIN, GPIO_INPUT);
@@ -16,7 +16,7 @@ int readFlameSensor() {
 }
 
 
-void init_flame():
+void init_flame(){
     while (true) {
             // Leitura do sensor de som
             int flames = readFlameSensor();
@@ -25,3 +25,4 @@ void init_flame():
             }
         vTaskDelay(pdMS_TO_TICKS(100));
     }
+}

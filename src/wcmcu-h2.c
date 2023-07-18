@@ -68,7 +68,7 @@ void led_rgb_set_mode(int duty)
 }
 
 
-bool led_on = false; // Variável global para representar o estado do LED (inicialmente ligado).
+bool led_on = true; // Variável global para representar o estado do LED (inicialmente ligado).
 
 void set_true(){
     printf("Ligando led!");

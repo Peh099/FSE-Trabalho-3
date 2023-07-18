@@ -5,6 +5,8 @@
 #include "esp_http_client.h"
 #include "esp_log.h"
 #include "dht11.h"
+#include "buzzer.h"
+#include "entry_sensor.h"
 #include "wcmcu-h2.h"
 #include "pwm.h"
 #include "esp_sleep.h"
@@ -31,9 +33,9 @@ void energia()
   config_pwm();
 
    //xTaskCreate(&init_dht11, "Temperatura_Umidade", 2048, NULL, 1, NULL);
-   xTaskCreate(&init_wcmcu_h2,"RGB",2048,NULL,10,NULL);
-   //xTaskCreate(&read_touch_sensor, "Touch", 2048, NULL, 1, NULL);
-   //xTaskCreate(&read_hall_magnetic_sensor, "Hall_Sensor_Task", 2048, NULL, 10, NULL);
+   //xTaskCreate(&init_wcmcu_h2,"RGB",2048,NULL,10,NULL);
+   //xTaskCreate(&init_buzzer, "Buzzer", 3072, NULL, 1, NULL);
+   xTaskCreate(&init_entry_sensor, "Sensor de entrada", 2048, NULL, 1, NULL);
    //xTaskCreate(read_sound_sensor, "Voice_Sensor", 2048, NULL, 10, NULL);
    //xTaskCreate(read_flame_sensor, "Flame_Sensor", 2048, NULL, 10, NULL);
    //xTaskCreate(read_reed_switch, "Reed_Switch", 2048, NULL, 10, NULL);

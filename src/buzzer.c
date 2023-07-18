@@ -14,9 +14,8 @@ static gpio_num_t BUZZER_PIN = GPIO_NUM_15;
 void buzzerTone(int frequency, int duration) {
     int halfPeriod = 1000000 / frequency / 2; // Calcula o tempo da metade do período em microssegundos
     int cycles = frequency * duration / 1000; // Calcula o número de ciclos
-    printf("a\n");
+    
     for (int i = 0; i < cycles; i++) {
-        printf("b\n");
         gpio_set_level(BUZZER_PIN, 1); // Ligue o buzzer
         ets_delay_us(halfPeriod); // Aguarde metade do período
         gpio_set_level(BUZZER_PIN, 0); // Desligue o buzzer
@@ -57,7 +56,6 @@ void init_buzzer() {
         printf("musica\n");
         for (int i = 0; i < sizeof(melody) / sizeof(melody[0]); i++) {
             buzzerTone(melody[i], duration[i]);
-            printf("g\n");
             vTaskDelay(pausadepoisdasnotas[i] / portTICK_PERIOD_MS); // Aguarde um curto intervalo entre as notas
         }
         vTaskDelay(3000 / portTICK_PERIOD_MS);

@@ -37,7 +37,7 @@ void modo_bateria(){
     // Configuração da GPIO para o botão de entrada
     pinMode(ENTRY, GPIO_INPUT_PULLUP);
 
-    gpio_wakeup_enable(ENTRY, GPIO_INTR_HIGH_LEVEL);
+    gpio_wakeup_enable(ENTRY, GPIO_INTR_LOW_LEVEL);
     esp_sleep_enable_gpio_wakeup();
 
     while (true)
@@ -50,8 +50,6 @@ void modo_bateria(){
         int state = digitalRead(ENTRY); // lê o estado do pino
 
         esp_sleep_wakeup_cause_t causa = esp_sleep_get_wakeup_cause();
-        // printf("causa= %d\n",causa);
-        // printf("ESP_SLEEP_WAKEUP_GPIO= %d\n",ESP_SLEEP_WAKEUP_GPIO);
         if (causa == ESP_SLEEP_WAKEUP_GPIO)
         {
             printf("\nO sensor despertou!\n");
@@ -59,10 +57,9 @@ void modo_bateria(){
             sprintf(mensagem, "{\"Entry\": %d}", state);
             mqtt_envia_mensagem("v1/devices/me/telemetry", mensagem);
             grava_valor_nvs("Entry", state);
-            causa = ESP_SLEEP_WAKEUP_TIMER;
             printf("Mensagem enviada!\n\n");
             vTaskDelay(1000 / portTICK_PERIOD_MS); // aguarde por 1 segundo
+            causa = ESP_SLEEP_WAKEUP_TIMER;
         }
-        
     }
 }

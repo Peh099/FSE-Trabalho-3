@@ -27,6 +27,6 @@ void init_sound(){
         sprintf(mensagem, "{\"SongSensor\": %d}", soundState);
         mqtt_envia_mensagem("v1/devices/me/telemetry", mensagem);
         grava_valor_nvs("SongSensor", soundState);
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        vTaskDelay(100 / portTICK_PERIOD_MS);
     }
 }

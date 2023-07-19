@@ -35,13 +35,12 @@ void energia()
 
   config_pwm();
 
-   //xTaskCreate(&init_dht11, "Temperatura_Umidade", 2048, NULL, 1, NULL);
-   //xTaskCreate(&init_wcmcu_h2,"RGB",2048,NULL,10,NULL);
+   xTaskCreate(&init_dht11, "Temperatura_Umidade", 2048, NULL, 1, NULL);
+   xTaskCreate(&init_wcmcu_h2,"RGB",2048,NULL,10,NULL);
    xTaskCreate(&init_buzzer, "Buzzer", 3072, NULL, 1, NULL);
-   //xTaskCreate(&init_entry_sensor, "Sensor de entrada", 2048, NULL, 10, NULL);
-   //xTaskCreate(&init_sound, "Voice_Sensor", 2048, NULL, 10, NULL);
+   xTaskCreate(&init_entry_sensor, "Sensor de entrada", 2048, NULL, 10, NULL);
+   xTaskCreate(&init_sound, "Voice_Sensor", 2048, NULL, 10, NULL);
    xTaskCreate(&init_flame, "Flame_Sensor", 2048, NULL, 10, NULL);
-   //xTaskCreate(read_reed_switch, "Reed_Switch", 2048, NULL, 10, NULL);
 }
 
 void bateria()

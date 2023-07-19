@@ -11,16 +11,32 @@
 
 static gpio_num_t BUZZER_PIN = GPIO_NUM_17;
 
+bool buzzer_on = false; 
+
 void buzzerTone(int frequency, int duration) {
     int halfPeriod = 1000000 / frequency / 2; // Calcula o tempo da metade do período em microssegundos
     int cycles = frequency * duration / 1000; // Calcula o número de ciclos
     
     for (int i = 0; i < cycles; i++) {
-        gpio_set_level(BUZZER_PIN, 1); // Ligue o buzzer
-        ets_delay_us(halfPeriod); // Aguarde metade do período
-        gpio_set_level(BUZZER_PIN, 0); // Desligue o buzzer
-        ets_delay_us(halfPeriod); // Aguarde metade do período
+        if(buzzer_on==1){
+            gpio_set_level(BUZZER_PIN, 1); // Ligue o buzzer
+            ets_delay_us(halfPeriod); // Aguarde metade do período
+            gpio_set_level(BUZZER_PIN, 0); // Desligue o buzzer
+            ets_delay_us(halfPeriod); // Aguarde metade do período
+        }
+        else{
+            gpio_set_level(BUZZER_PIN, 0);
+            break;
+        }
     }
+}
+
+void set_true_buzzer(){
+    buzzer_on = true;
+}
+
+void set_false_buzzer(){
+    buzzer_on = false;
 }
 
 void init_buzzer() {
@@ -53,11 +69,17 @@ void init_buzzer() {
     //     400, 400, 400, 800
     // };
     while(1){
-        printf("musica\n");
-        for (int i = 0; i < sizeof(melody) / sizeof(melody[0]); i++) {
-            buzzerTone(melody[i], duration[i]);
-            vTaskDelay(pausadepoisdasnotas[i] / portTICK_PERIOD_MS); // Aguarde um curto intervalo entre as notas
+        if(buzzer_on==1){
+            printf("musica\n");
+            
+            for (int i = 0; i < sizeof(melody) / sizeof(melody[0]); i++) {
+                buzzerTone(melody[i], duration[i]);
+                vTaskDelay(pausadepoisdasnotas[i] / portTICK_PERIOD_MS); // Aguarde um curto intervalo entre as notas
+            }
+            vTaskDelay(3000 / portTICK_PERIOD_MS);
         }
-        vTaskDelay(3000 / portTICK_PERIOD_MS);
+        else{
+            gpio_set_level(BUZZER_PIN, 0);
+        }
     }
 }

@@ -19,7 +19,8 @@
 #include "mqtt_client.h"
 
 #include "cJSON.h"
-#include "wcmcu-h2.h"
+#include "rgb.h"
+#include "buzzer.h"
 #include "mqtt.h"
 
 #define TAG "MQTT"
@@ -80,10 +81,16 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
         if (strstr(chave, "set") != NULL)
         {
             if (strstr(valor, "true-botao-2") != NULL)
-                set_true();
-            else{
-                set_false();
+                set_true_rgb();
+            if (strstr(valor, "false-botao-2") != NULL){
+                set_false_rgb();
             }
+            if(strstr(valor, "true-botao-1")!=NULL)
+                set_true_buzzer();
+            if(strstr(valor, "false-botao-1")!=NULL){
+                set_false_buzzer();
+            }
+
         }
         cJSON_Delete(json);
         // commands_handle_request(event);

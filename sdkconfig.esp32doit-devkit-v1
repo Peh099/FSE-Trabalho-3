@@ -317,8 +317,8 @@ CONFIG_ESP_MAXIMUM_RETRY=10
 #
 # Modo de operação do dispositivo
 #
-CONFIG_ENERGY_MODE=y
-# CONFIG_BATTERY_MODE is not set
+# CONFIG_ENERGY_MODE is not set
+CONFIG_BATTERY_MODE=y
 # end of Modo de operação do dispositivo
 
 #

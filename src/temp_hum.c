@@ -29,7 +29,7 @@
 #include "freertos/task.h"
 #include <string.h>
 
-#include "dht11.h"
+#include "temp_hum.h"
 
 #include "nvs_handler.h"
 

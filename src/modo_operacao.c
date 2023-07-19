@@ -4,12 +4,12 @@
 #include "esp_event.h"
 #include "esp_http_client.h"
 #include "esp_log.h"
-#include "dht11.h"
+#include "temp_hum.h"
 #include "buzzer.h"
 #include "entry_sensor.h"
 #include "flame.h"
 #include "sound.h"
-#include "wcmcu-h2.h"
+#include "rgb.h"
 #include "pwm.h"
 #include "esp_sleep.h"
 #include "esp32/rom/uart.h"
@@ -26,54 +26,26 @@
 #include "nvs_handler.h"
 #include "mqtt.h"
 #include "wifi.h"
+#include "modoBateria.h"
 
-#define HALL 4
+#define ENTRY 16
 
 void energia()
 {
 
   config_pwm();
 
-   xTaskCreate(&init_dht11, "Temperatura_Umidade", 2048, NULL, 1, NULL);
-   xTaskCreate(&init_wcmcu_h2,"RGB",2048,NULL,10,NULL);
-   //xTaskCreate(&init_buzzer, "Buzzer", 3072, NULL, 1, NULL);
-   xTaskCreate(&init_entry_sensor, "Sensor de entrada", 2048, NULL, 10, NULL);
-   xTaskCreate(&init_sound, "Voice_Sensor", 2048, NULL, 10, NULL);
+   //xTaskCreate(&init_dht11, "Temperatura_Umidade", 2048, NULL, 1, NULL);
+   //xTaskCreate(&init_wcmcu_h2,"RGB",2048,NULL,10,NULL);
+   xTaskCreate(&init_buzzer, "Buzzer", 3072, NULL, 1, NULL);
+   //xTaskCreate(&init_entry_sensor, "Sensor de entrada", 2048, NULL, 10, NULL);
+   //xTaskCreate(&init_sound, "Voice_Sensor", 2048, NULL, 10, NULL);
    xTaskCreate(&init_flame, "Flame_Sensor", 2048, NULL, 10, NULL);
    //xTaskCreate(read_reed_switch, "Reed_Switch", 2048, NULL, 10, NULL);
 }
 
 void bateria()
 {
-  char mensagem[50];
-
-  // Configuração da GPIO para o botão de entrada
-  pinMode(HALL, GPIO_INPUT_PULLUP);
-
-  gpio_wakeup_enable(HALL, GPIO_INTR_HIGH_LEVEL);
-  esp_sleep_enable_gpio_wakeup();
-
-  while (true)
-  {
-    ESP_LOGI("ModoLight", "Modo Light Sleep...");
-    esp_light_sleep_start();
-    // Configura o modo sleep somente após completar a escrita na UART para finalizar o printf
-    uart_tx_wait_idle(CONFIG_ESP_CONSOLE_UART_NUM);
-
-    int state = digitalRead(HALL); // lê o estado do pino
-
-    esp_sleep_wakeup_cause_t causa = esp_sleep_get_wakeup_cause();
-    if (causa == ESP_SLEEP_WAKEUP_GPIO)
-    {
-      printf("\nO sensor despertou!\n");
-      printf("Touch: %d\n", state);
-      sprintf(mensagem, "{\"Touch\": %d}", state);
-      mqtt_envia_mensagem("v1/devices/me/telemetry", mensagem);
-      grava_valor_nvs("Touch", state);
-      causa = ESP_SLEEP_WAKEUP_TIMER;
-      printf("Mensagem enviada!\n\n");
-      vTaskDelay(1000 / portTICK_PERIOD_MS); // aguarde por 1 segundo
-    }
-    
-  }
+  xTaskCreate(&modo_bateria,"Modo_Bateria",2048,NULL,1,NULL);
 }
+

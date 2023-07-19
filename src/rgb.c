@@ -12,7 +12,7 @@
 #include "driver/gpio.h"
 #include "driver/ledc.h"
 #include "esp_err.h"
-#include "wcmcu-h2.h"
+#include "rgb.h"
 
 #define TAG "COLORS"
 
@@ -70,12 +70,12 @@ void led_rgb_set_mode(int duty)
 
 bool led_on = true; // Variável global para representar o estado do LED (inicialmente ligado).
 
-void set_true(){
+void set_true_rgb(){
     printf("Ligando led!");
     led_on = true;
 }
 
-void set_false(){
+void set_false_rgb(){
     printf("Desligando led!");
     led_on = false;
 }

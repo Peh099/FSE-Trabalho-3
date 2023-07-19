@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "nvs_handler.h": "c",
+        "modobateria.h": "c",
+        "gpio_setup.h": "c"
+    }
+}
